@@ -39,8 +39,7 @@
                     android:text="AutoSync Free"
                     android:textColor="@color/surface"
                     android:textSize="26sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.01"/>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -92,7 +91,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tippe unten auf „Neu", um deine erste Ordner-Synchronisierung anzulegen."
+                    android:text="Tippe unten auf das Plus, um deine erste Ordner-Synchronisierung anzulegen."
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:gravity="center"
@@ -103,16 +102,15 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        android:text="Neu"
-        android:textColor="@color/surface"
+        android:contentDescription="Neu"
+        android:src="@drawable/ic_add"
         app:backgroundTint="@color/brand_primary"
-        app:icon="@drawable/ic_add"
-        app:iconTint="@color/surface"/>
+        app:tint="@color/surface"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

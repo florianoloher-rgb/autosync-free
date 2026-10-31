@@ -53,22 +53,23 @@
         app:icon="@drawable/ic_drive"
         app:iconTint="@color/brand_secondary"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPickDrive"
+        style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:hint="Google-Drive-Ordner-ID"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp">
+        android:layout_marginTop="10dp"
+        android:text="Drive-Ordner wählen"
+        app:icon="@drawable/ic_drive"
+        app:iconTint="@color/brand_secondary"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputDrive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/tvDriveStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="4dp"
+        android:text="(noch nichts gewählt)"/>
 
 </LinearLayout>
