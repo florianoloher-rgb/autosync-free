@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AutoSync Free</string>
+    <string name="new_pair">Neues Sync-Paar</string>
+    <string name="delete">Loeschen</string>
+    <string name="name">Name</string>
+    <string name="pick_local">Lokalen Ordner waehlen</string>
+    <string name="none_picked">(noch nichts gewaehlt)</string>
+    <string name="drive_folder_id">Google-Drive-Ordner-ID</string>
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbrechen</string>
+</resources>

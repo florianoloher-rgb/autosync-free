@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="12dp"
+    android:layout_marginBottom="6dp" android:background="#F0F0F0">
+    <TextView android:id="@+id/tvName" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:textStyle="bold" android:textSize="16sp"/>
+    <TextView android:id="@+id/tvLocal" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:textSize="12sp"
+        android:maxLines="1" android:ellipsize="middle"/>
+    <TextView android:id="@+id/tvDrive" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:textSize="12sp"
+        android:maxLines="1" android:ellipsize="middle"/>
+    <Button android:id="@+id/btnDelete" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="@string/delete"
+        android:layout_gravity="end"/>
+</LinearLayout>
