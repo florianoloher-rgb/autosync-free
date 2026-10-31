@@ -1,19 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="vertical" android:padding="16dp">
-    <EditText android:id="@+id/inputName" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:hint="@string/name"/>
-    <Button android:id="@+id/btnPickLocal" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="8dp"
-        android:text="@string/pick_local"/>
-    <TextView android:id="@+id/tvLocalStatus" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:textSize="11sp"
-        android:text="@string/none_picked"/>
-    <Button android:id="@+id/btnGoogleAuth" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="12dp"
-        android:text="Mit Google verbinden"/>
-    <EditText android:id="@+id/inputDrive" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:layout_marginTop="8dp"
-        android:hint="@string/drive_folder_id"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name der Synchronisierung"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPickLocal"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Lokalen Ordner wählen"
+        app:icon="@drawable/ic_folder"
+        app:iconTint="@color/brand_primary"/>
+
+    <TextView
+        android:id="@+id/tvLocalStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="4dp"
+        android:text="(noch nichts gewählt)"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoogleAuth"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Mit Google verbinden"
+        app:icon="@drawable/ic_drive"
+        app:iconTint="@color/brand_secondary"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:hint="Google-Drive-Ordner-ID"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputDrive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>

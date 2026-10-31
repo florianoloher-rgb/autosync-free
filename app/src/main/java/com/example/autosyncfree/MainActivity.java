@@ -3,12 +3,14 @@ package com.example.autosyncfree;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.*;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,8 +52,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void reload() {
         io.execute(() -> {
-            var list = db.syncPairDao().getAll();
-            runOnUiThread(() -> adapter.setItems(list));
+            List<SyncPair> list = db.syncPairDao().getAll();
+            runOnUiThread(() -> {
+                adapter.setItems(list);
+                View empty = findViewById(R.id.emptyState);
+                View recycler = findViewById(R.id.recycler);
+                if (list.isEmpty()) {
+                    empty.setVisibility(View.VISIBLE);
+                    recycler.setVisibility(View.GONE);
+                } else {
+                    empty.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
+                }
+            });
         });
     }
 
@@ -88,25 +101,35 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         AlertDialog dlg = new AlertDialog.Builder(this)
-            .setTitle(R.string.new_pair).setView(view)
-            .setPositiveButton(R.string.save, null)
-            .setNegativeButton(R.string.cancel, null).create();
+            .setTitle("Neue Synchronisierung")
+            .setView(view)
+            .setPositiveButton("Speichern", null)
+            .setNegativeButton("Abbrechen", null)
+            .create();
         dlg.setOnShowListener(d -> dlg.getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(v -> {
                 String name = inputName.getText().toString().trim();
                 String drive = inputDrive.getText().toString().trim();
                 if (name.isEmpty() || pendingLocalUri == null) {
-                    Toast.makeText(this, "Name und lokaler Ordner noetig", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Name und lokaler Ordner nötig", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 SyncPair p = new SyncPair();
-                p.name = name; p.localTreeUri = pendingLocalUri.toString(); p.driveFolderId = drive;
-                io.execute(() -> { db.syncPairDao().insert(p); runOnUiThread(() -> { reload(); dlg.dismiss(); }); });
+                p.name = name;
+                p.localTreeUri = pendingLocalUri.toString();
+                p.driveFolderId = drive;
+                io.execute(() -> {
+                    db.syncPairDao().insert(p);
+                    runOnUiThread(() -> { reload(); dlg.dismiss(); });
+                });
             }));
         dlg.show();
     }
 
     private void deletePair(SyncPair p) {
-        io.execute(() -> { db.syncPairDao().delete(p); runOnUiThread(this::reload); });
+        io.execute(() -> {
+            db.syncPairDao().delete(p);
+            runOnUiThread(this::reload);
+        });
     }
 }
