@@ -33,11 +33,12 @@ public class DriveAuthManager {
     private final ActivityResultLauncher<Intent> launcher;
     private Drive driveService;
     private AuthListener pendingListener;
+    private static final Scope DRIVE_SCOPE = new Scope(DriveScopes.DRIVE);
 
     public DriveAuthManager(ComponentActivity activity) {
         this.activity = activity;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+            .requestScopes(DRIVE_SCOPE)
             .requestEmail()
             .build();
         this.client = GoogleSignIn.getClient(activity, gso);
@@ -49,15 +50,7 @@ public class DriveAuthManager {
                         GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     if (account != null) {
-                        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
-                            activity, Collections.singleton(DriveScopes.DRIVE_FILE));
-                        credential.setSelectedAccount(account.getAccount());
-                        driveService = new Drive.Builder(
-                            new NetHttpTransport(),
-                            GsonFactory.getDefaultInstance(),
-                            credential)
-                            .setApplicationName("AutoSync Free")
-                            .build();
+                        buildDriveService(account);
                         if (pendingListener != null) pendingListener.onAuthSuccess();
                     }
                 } catch (ApiException e) {
@@ -68,13 +61,48 @@ public class DriveAuthManager {
                     pendingListener = null;
                 }
             });
+        restoreSession();
+    }
+
+    private void restoreSession() {
+        try {
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(activity);
+            if (account != null && GoogleSignIn.hasPermissions(account, DRIVE_SCOPE)) {
+                buildDriveService(account);
+                Log.i(TAG, "Session restored for " + account.getEmail());
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "restoreSession failed", e);
+        }
+    }
+
+    private void buildDriveService(GoogleSignInAccount account) {
+        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+            activity, Collections.singleton(DriveScopes.DRIVE));
+        credential.setSelectedAccount(account.getAccount());
+        driveService = new Drive.Builder(
+            new NetHttpTransport(),
+            GsonFactory.getDefaultInstance(),
+            credential)
+            .setApplicationName("FloGPT AutoSync")
+            .build();
     }
 
     public void authorize(AuthListener listener) {
-        if (driveService != null) { listener.onAuthSuccess(); return; }
         this.pendingListener = listener;
-        launcher.launch(client.getSignInIntent());
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(activity);
+        if (account != null && GoogleSignIn.hasPermissions(account, DRIVE_SCOPE)) {
+            if (driveService == null) buildDriveService(account);
+            listener.onAuthSuccess();
+            return;
+        }
+        if (account != null) {
+            client.signOut().addOnCompleteListener(t -> launcher.launch(client.getSignInIntent()));
+        } else {
+            launcher.launch(client.getSignInIntent());
+        }
     }
 
+    public boolean isConnected() { return driveService != null; }
     public Drive getDriveService() { return driveService; }
 }

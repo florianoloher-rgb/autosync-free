@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             folderPicker.launch(i);
         });
 
-        btnGoogle.setText(driveAuthManager.getDriveService() != null
+        btnGoogle.setText(driveAuthManager.isConnected()
             ? getString(R.string.connected) : getString(R.string.connect_google));
         btnGoogle.setOnClickListener(v -> driveAuthManager.authorize(new DriveAuthManager.AuthListener() {
             @Override public void onAuthSuccess() {

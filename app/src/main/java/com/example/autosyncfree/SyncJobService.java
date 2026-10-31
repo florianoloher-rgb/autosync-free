@@ -117,7 +117,7 @@ public class SyncJobService extends JobService {
         if (account == null) { Log.w(TAG, "Not signed in - skip"); return; }
 
         GoogleAccountCredential cred = GoogleAccountCredential.usingOAuth2(
-            this, Collections.singleton(DriveScopes.DRIVE_FILE));
+            this, Collections.singleton(DriveScopes.DRIVE));
         cred.setSelectedAccount(account.getAccount());
         Drive drive = new Drive.Builder(
             new NetHttpTransport(), GsonFactory.getDefaultInstance(), cred)
