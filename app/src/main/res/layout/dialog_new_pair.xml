@@ -10,6 +10,9 @@
     <TextView android:id="@+id/tvLocalStatus" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:textSize="11sp"
         android:text="@string/none_picked"/>
+    <Button android:id="@+id/btnGoogleAuth" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="12dp"
+        android:text="Mit Google verbinden"/>
     <EditText android:id="@+id/inputDrive" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:layout_marginTop="8dp"
         android:hint="@string/drive_folder_id"/>
