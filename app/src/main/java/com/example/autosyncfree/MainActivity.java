@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = AppDatabase.get(this);
         driveAuthManager = new DriveAuthManager(this);
+
         RecyclerView rv = findViewById(R.id.recycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PairAdapter(new PairAdapter.Listener() {
@@ -62,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
         });
         rv.setAdapter(adapter);
         findViewById(R.id.fab).setOnClickListener(v -> showNewPairDialog());
+        reload();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
         reload();
     }
 
@@ -119,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         btnPickDrive.setOnClickListener(v -> {
-            if (driveAuthManager.getDriveService() == null) {
+            if (!driveAuthManager.isConnected()) {
                 Toast.makeText(this, "Erst mit Google verbinden", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -153,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     long id = db.syncPairDao().insert(p);
                     p.id = (int) id;
                     SyncJobService.scheduleTrigger(MainActivity.this, p);
+                    SyncJobService.ensureInitialPageToken(MainActivity.this, p);
                     runOnUiThread(() -> { reload(); dlg.dismiss(); });
                 });
             }));
@@ -162,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     private void deletePair(SyncPair p) {
         io.execute(() -> {
             SyncJobService.cancelAll(this, p);
+            db.snapshotDao().deleteByPair(p.id);
             db.syncPairDao().delete(p);
             runOnUiThread(this::reload);
         });

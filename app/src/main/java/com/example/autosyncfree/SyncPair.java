@@ -11,6 +11,9 @@ public class SyncPair {
     public String driveFolderId;
     public boolean enabled = true;
     public long lastSyncMillis = 0;
+    public String localVersionHash = "";
+    public String driveVersionHash = "";
+    public String driveChangesPageToken = "";
 
     public SyncPair() {}
 }
