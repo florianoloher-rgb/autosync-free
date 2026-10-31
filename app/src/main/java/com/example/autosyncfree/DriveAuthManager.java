@@ -1,9 +1,9 @@
 package com.example.autosyncfree;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.activity.ComponentActivity;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
@@ -28,13 +28,13 @@ public class DriveAuthManager {
         void onAuthSuccess();
         void onAuthFailure(String msg);
     }
-    private final Activity activity;
+    private final ComponentActivity activity;
     private final GoogleSignInClient client;
     private final ActivityResultLauncher<Intent> launcher;
     private Drive driveService;
     private AuthListener pendingListener;
 
-    public DriveAuthManager(Activity activity) {
+    public DriveAuthManager(ComponentActivity activity) {
         this.activity = activity;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
