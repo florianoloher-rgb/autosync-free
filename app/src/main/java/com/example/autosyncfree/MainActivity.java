@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private Uri pendingLocalUri;
     private TextView pendingLocalStatus;
     private String pendingDriveFolderId;
-    private String pendingDrivePath;
     private TextView pendingDriveStatus;
     private DriveAuthManager driveAuthManager;
 
@@ -53,7 +52,14 @@ public class MainActivity extends AppCompatActivity {
         driveAuthManager = new DriveAuthManager(this);
         RecyclerView rv = findViewById(R.id.recycler);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PairAdapter(this::deletePair);
+        adapter = new PairAdapter(new PairAdapter.Listener() {
+            @Override public void onDelete(SyncPair p) { deletePair(p); }
+            @Override public void onSyncNow(SyncPair p) {
+                SyncJobService.scheduleImmediate(MainActivity.this, p);
+                Toast.makeText(MainActivity.this, "Sync gestartet für " + p.name,
+                    Toast.LENGTH_SHORT).show();
+            }
+        });
         rv.setAdapter(adapter);
         findViewById(R.id.fab).setOnClickListener(v -> showNewPairDialog());
         reload();
@@ -80,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     private void showNewPairDialog() {
         pendingLocalUri = null;
         pendingDriveFolderId = null;
-        pendingDrivePath = null;
 
         android.view.View view = getLayoutInflater().inflate(R.layout.dialog_new_pair, null);
         EditText inputName = view.findViewById(R.id.inputName);
@@ -99,11 +104,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnGoogle.setText(driveAuthManager.getDriveService() != null
-            ? "✓ Google verbunden" : "Mit Google verbinden");
+            ? getString(R.string.connected) : getString(R.string.connect_google));
         btnGoogle.setOnClickListener(v -> driveAuthManager.authorize(new DriveAuthManager.AuthListener() {
             @Override public void onAuthSuccess() {
                 runOnUiThread(() -> {
-                    btnGoogle.setText("✓ Google verbunden");
+                    btnGoogle.setText(getString(R.string.connected));
                     Toast.makeText(MainActivity.this, "Google verbunden", Toast.LENGTH_SHORT).show();
                 });
             }
@@ -120,17 +125,15 @@ public class MainActivity extends AppCompatActivity {
             }
             new DriveFolderBrowser(this, driveAuthManager.getDriveService(), (id, path) -> {
                 pendingDriveFolderId = id;
-                pendingDrivePath = path;
-                runOnUiThread(() -> pendingDriveStatus.setText(
-                    path + "\nID: " + id));
+                runOnUiThread(() -> pendingDriveStatus.setText(path + "\nID: " + id));
             }).show();
         });
 
         AlertDialog dlg = new AlertDialog.Builder(this)
-            .setTitle("Neue Synchronisierung")
+            .setTitle(R.string.new_pair)
             .setView(view)
-            .setPositiveButton("Speichern", null)
-            .setNegativeButton("Abbrechen", null)
+            .setPositiveButton(R.string.save, null)
+            .setNegativeButton(R.string.cancel, null)
             .create();
         dlg.setOnShowListener(d -> dlg.getButton(AlertDialog.BUTTON_POSITIVE)
             .setOnClickListener(v -> {
@@ -145,8 +148,11 @@ public class MainActivity extends AppCompatActivity {
                 p.name = name;
                 p.localTreeUri = pendingLocalUri.toString();
                 p.driveFolderId = pendingDriveFolderId;
+                p.enabled = true;
                 io.execute(() -> {
-                    db.syncPairDao().insert(p);
+                    long id = db.syncPairDao().insert(p);
+                    p.id = (int) id;
+                    SyncJobService.scheduleTrigger(MainActivity.this, p);
                     runOnUiThread(() -> { reload(); dlg.dismiss(); });
                 });
             }));
@@ -155,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void deletePair(SyncPair p) {
         io.execute(() -> {
+            SyncJobService.cancelAll(this, p);
             db.syncPairDao().delete(p);
             runOnUiThread(this::reload);
         });

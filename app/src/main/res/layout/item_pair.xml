@@ -50,7 +50,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="● Aktiv"
+                    android:text="@string/active"
                     android:textSize="12sp"
                     android:textColor="@color/success"
                     android:layout_marginTop="2dp"/>
@@ -139,11 +139,22 @@
             android:layout_marginTop="10dp">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSync"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sync_now"
+                android:textColor="@color/brand_primary"
+                app:icon="@drawable/ic_sync"
+                app:iconTint="@color/brand_primary"
+                app:iconSize="16dp"/>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDelete"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Löschen"
+                android:text="@string/delete"
                 android:textColor="@color/danger"
                 app:icon="@drawable/ic_delete"
                 app:iconTint="@color/danger"

@@ -1,11 +1,18 @@
 <resources>
-    <string name="app_name">AutoSync Free</string>
-    <string name="new_pair">Neues Sync-Paar</string>
-    <string name="delete">Loeschen</string>
+    <string name="app_name">FloGPT AutoSync</string>
+    <string name="new_pair">Neue Synchronisierung</string>
+    <string name="delete">Löschen</string>
+    <string name="sync_now">Jetzt syncen</string>
     <string name="name">Name</string>
-    <string name="pick_local">Lokalen Ordner waehlen</string>
-    <string name="none_picked">(noch nichts gewaehlt)</string>
-    <string name="drive_folder_id">Google-Drive-Ordner-ID</string>
+    <string name="pick_local">Lokalen Ordner wählen</string>
+    <string name="pick_drive">Drive-Ordner wählen</string>
+    <string name="connect_google">Mit Google verbinden</string>
+    <string name="connected">✓ Google verbunden</string>
+    <string name="none_picked">(noch nichts gewählt)</string>
     <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
+    <string name="subtitle">Deine Ordner. Automatisch synchron.</string>
+    <string name="empty_title">Noch keine Synchronisierung</string>
+    <string name="empty_body">Tippe unten auf das Plus, um deine erste Ordner-Synchronisierung anzulegen.</string>
+    <string name="active">● Aktiv</string>
 </resources>

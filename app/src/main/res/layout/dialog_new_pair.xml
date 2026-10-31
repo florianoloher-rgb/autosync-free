@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="Lokalen Ordner wählen"
+        android:text="@string/pick_local"
         app:icon="@drawable/ic_folder"
         app:iconTint="@color/brand_primary"/>
 
@@ -41,7 +41,7 @@
         android:textSize="11sp"
         android:textColor="@color/text_secondary"
         android:layout_marginTop="4dp"
-        android:text="(noch nichts gewählt)"/>
+        android:text="@string/none_picked"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogleAuth"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="Mit Google verbinden"
+        android:text="@string/connect_google"
         app:icon="@drawable/ic_drive"
         app:iconTint="@color/brand_secondary"/>
 
@@ -59,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Drive-Ordner wählen"
+        android:text="@string/pick_drive"
         app:icon="@drawable/ic_drive"
         app:iconTint="@color/brand_secondary"/>
 
@@ -70,6 +70,6 @@
         android:textSize="11sp"
         android:textColor="@color/text_secondary"
         android:layout_marginTop="4dp"
-        android:text="(noch nichts gewählt)"/>
+        android:text="@string/none_picked"/>
 
 </LinearLayout>
